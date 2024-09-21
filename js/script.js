@@ -1,6 +1,28 @@
+const opacity = (element) => {
+    const tela = document.querySelector("#tela")
+    element.classList.toggle("opacity")
+    tela.classList.toggle("opacity")
+}
 
+const login = document.querySelector("#login")
+const registro = document.querySelector("#registro")
+const adicionar = document.querySelector("#adicionar")
 
-document.querySelector("form button").addEventListener("click", function (e) {
+const form = document.querySelector("form")
+
+login.addEventListener("click",()=>{
+    opacity(form)
+})
+
+const remove = (element) =>{
+    const remove = element.querySelector('#remove')
+    remove.addEventListener("click",()=>{
+        opacity(element)
+    })
+}
+remove(form)
+
+ form.querySelector("button").addEventListener("click", function (e) {
     e.preventDefault()
     const usuario = document.querySelector("form input").value
     axios.post("login.php", {
@@ -17,14 +39,19 @@ document.querySelector("form button").addEventListener("click", function (e) {
         }
     })
 })
-const mensagem = document.querySelector("#friendZone")
+
+
+
+const mensagem = document.querySelector("main")
 const mensagemArray = Array.from(mensagem.children)
 
 mensagemArray.forEach(mensagens => {
     const span = mensagens.querySelector("span")
     const section = mensagens.querySelector("section")
+    remove(section)
     span.addEventListener("click", () => {
-        section.classList.toggle("opacity")
+        opacity(section)
+       
     })
 
     section.querySelector("#sectionFooter button").addEventListener("click", function (e) {
