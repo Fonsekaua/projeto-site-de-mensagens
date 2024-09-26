@@ -1,5 +1,5 @@
 <?php 
-include "db_actions.php";
+include "../db_actions.php";
 
 if($_SERVER["REQUEST_METHOD"] === "POST"){
 

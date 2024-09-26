@@ -3,13 +3,13 @@ session_start();
 include "db/db_actions.php";
 $usuarios = selecionarTabela('usuarios');
 $mensagens = selecionarTabela('mensagens');
+$friends = selecionarTabela('friends');
 
 foreach ($usuarios as $usuario) {
     if ($_SESSION) {
         if ($_SESSION['usuario'] == $usuario['usuario']) {
             $id = $usuario['id'];
-           
-        }
+        } 
     }
 }
 
@@ -32,13 +32,8 @@ foreach ($usuarios as $usuario) {
     <?php include "php/pageLogin.php"?>
 
     <main>
-        <?php foreach ($usuarios as  $usuario): ?>
-            <?php include "php/pageMensagens.php"; ?>
-        <?php endforeach ?>
+            <?php include "php/pageMain.php"; ?>
     </main>
-
-
-
 
     <?php include "php/footer.php"; ?>
 </body>
