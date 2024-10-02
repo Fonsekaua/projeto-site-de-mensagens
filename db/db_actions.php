@@ -15,6 +15,16 @@ function uploadMensager($mensagem, $id_remetente,$id_destinatario){
     $db->execute();
     return $db->rowCount() > 0; // Retorna TRUE se a operação for bem-sucedida
 }
+function uploadFriends($id_usuario, $id_usuarioFriend){
+    global $pdo;
+    $consulta = "INSERT INTO friends (id_usuario, id_usuarioFriend) VALUES (:id_usuario, :id_usuarioFriend)";
+    $db = $pdo->prepare($consulta);
+
+    $db->bindParam(":id_usuario", var: $id_usuario);
+    $db->bindParam(":id_usuarioFriend", var: $id_usuarioFriend);
+    $db->execute();
+    return $db->rowCount() > 0; // Retorna TRUE se a operação for bem-sucedida
+}
 function verificarMensagens($id_destinatario) {
     global $pdo;
 
@@ -36,33 +46,33 @@ function verificarMensagens($id_destinatario) {
     // Se a quantidade for maior que 0, o destinatário tem mensagens
     return $quantidade > 0;
 }
-function verificarMensagensRemetente($id_remetente) {
+function usuarioEnviouMensagem($id_remetente) {
     global $pdo;
 
-    // Consulta SQL para verificar se há mensagens para o destinatário
+    // Consulta SQL para verificar se o usuário enviou mensagens
     $consulta = "SELECT COUNT(*) FROM mensagens WHERE id_remetente = :id_remetente";
     
     // Preparando a consulta
     $db = $pdo->prepare($consulta);
     
     // Vinculando o parâmetro
-    $db->bindParam(":id_remetente", $id_remetente);
+    $db->bindParam(":id_remetente", $id_remetente, PDO::PARAM_INT);
     
     // Executando a consulta
     $db->execute();
     
-    // Retornando o número de mensagens
+    // Retornando o número de mensagens enviadas
     $quantidade = $db->fetchColumn();
     
-    // Se a quantidade for maior que 0, o destinatário tem mensagens
+    // Retorna true se o usuário enviou pelo menos uma mensagem
     return $quantidade > 0;
 }
+
 function verificarAmizade($id_usuario1, $id_usuario2) {
     global $pdo;
 
     // Consulta SQL para verificar se existe amizade entre os dois usuários
-    $consulta = "SELECT COUNT(*) FROM friends 
-                 WHERE (id_usuario = :id_usuario1 AND id_usuarioFriend = :id_usuario2)";
+    $consulta = "SELECT COUNT(*) FROM friends WHERE (id_usuario = :id_usuario1 AND id_usuarioFriend = :id_usuario2)";
     
     // Preparando a consulta
     $db = $pdo->prepare($consulta);
