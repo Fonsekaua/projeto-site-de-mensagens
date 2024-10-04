@@ -2,32 +2,9 @@ const opacity = (element) => {
     const tela = document.querySelector("#tela")
     element.classList.toggle("opacity")
     tela.classList.toggle("opacity")
-    document.querySelector("body").classList.toggle("over")
-}
-const usuarioLogado = document.querySelector("#usuarioLogado")
-const login = document.querySelector("#login")
-const registro = document.querySelector("#registro")
-const adicionar = document.querySelector("#adicionar")
-const sessionDestroy = document.querySelector("#sessionDestroy")
-const form = document.querySelector("form")
-const sectionAdicionar = document.querySelector("#sectionAdicionar")
-if(adicionar){
-    adicionar.addEventListener("click",function(){
-        opacity(sectionAdicionar)
-    })
-}
-if(login){
-    login.addEventListener("click",function(){
-    opacity(form)
-})
-}
-if(sessionDestroy){
-    sessionDestroy.addEventListener("click",()=>{
-        window.location.href = 'db/api/sessionDestroy.php';
-        sessionDestroy
     
-    })
 }
+
 const remove = (element) =>{
     
     if(element){
@@ -36,12 +13,46 @@ const remove = (element) =>{
         opacity(element)
     })}
 }
+const usuarioLogado = document.querySelector("#usuarioLogado")
+const login = document.querySelector("#login")
+const registro = document.querySelector("#registro")
+const adicionar = document.querySelector("#adicionar")
+const sessionDestroy = document.querySelector("#sessionDestroy")
+const formLogin = document.getElementById("formLogin")
+const formRegistro = document.getElementById("form")
+const sectionAdicionar = document.querySelector("#sectionAdicionar")
 
-remove(form)
+if(adicionar){
+    adicionar.addEventListener("click",function(){
+        opacity(sectionAdicionar)
+    })
+}
+if(login){
+    login.addEventListener("click",function(){
+    opacity(formLogin)
+})
+}
+
+if(sessionDestroy){
+    sessionDestroy.addEventListener("click",()=>{
+        window.location.href = 'db/api/sessionDestroy.php';
+        sessionDestroy
+    
+    })
+}
+if(registro){
+    registro.addEventListener("click",()=>{
+        opacity(formRegistro)
+    })
+}
+
+remove(formRegistro)
+remove(formLogin)
 remove(sectionAdicionar)
- form.querySelector("button").addEventListener("click", function (e) {
+ formLogin.querySelector("button").addEventListener("click", function (e) {
+    
     e.preventDefault()
-    const usuario = document.querySelector("form input").value
+    const usuario = document.querySelector("#formLogin input").value
     axios.post("db/api/login.php", {
         usuario: usuario
     }).then((response) => {
@@ -62,47 +73,73 @@ remove(sectionAdicionar)
     })
 })
 
+formRegistro.querySelector("button").addEventListener("click", function (e) {
+    
+    e.preventDefault()
+    const usuario = document.querySelector("#form input").value
+    axios.post("db/api/registro.php", {
+        usuario: usuario
+    }).then((response) => {
+        const data = response.data
+        if (data.registro) {
+            console.log(data.mensagem)
+            opacity(formRegistro)
+            
+        }
+        else{
+            console.log(response)
+        }
+    })
+})
 
 
-const mensagem = document.querySelector("main")
-const mensagemArray = Array.from(mensagem.children)
+const mensagemArray = document.querySelectorAll("#mensagensBack")
 
 mensagemArray.forEach(mensagens => {
-    const span = mensagens.querySelectorAll("span")
+    console.log(mensagens)
+    const span = mensagens.querySelector("span")
     const section = mensagens.querySelector("#mensagensSection")
-    remove(section)
+    const sectionMain = section.querySelector("#sectionMain")
+
+
+    remove(section) 
     if(span){
-        span.forEach(elementSpan => {
-            elementSpan.addEventListener("click", () => {
+            span.addEventListener("click", () => {
                 opacity(section)
-            })
         })
     }
 
-    if(section){
-        section.querySelector("#sectionFooter button").addEventListener("click", function (e) {
-            e.preventDefault()
-            const input = document.querySelector("#mensagemDoUsuario")
+    if (section) {
+        section.querySelector("button").addEventListener("click", async function (event) {
+            event.preventDefault()
+
+            try {
+            const input = section.querySelector("#mensagemDoUsuario")
             const mensagemDoUsuario = input.value
             const id_remetente = usuarioLogado.getAttribute("data-id")
-            const id_destinatario = span.getAttribute("data-id")
-            axios.post("db/api/mensagem.php", {
-                mensagemDoUsuario: mensagemDoUsuario,
-                id_remetente: id_remetente,
-                id_destinatario: id_destinatario
-            }).then((response) => {
+            const id_destinatario = section.getAttribute("data-id")
+                const response = await axios.post("db/api/mensagem.php", {
+                    mensagemDoUsuario: mensagemDoUsuario,
+                    id_remetente: id_remetente,
+                    id_destinatario: id_destinatario
+                })
+    
                 const data = response.data
+                console.log(data)
+    
                 if (data.envio) {
-                    const sectionMain = document.querySelector("#sectionMain")
                     const label = document.createElement("label")
                     label.innerHTML = data.mensagemDoUsuario
                     label.classList = "mensagem direita"
                     sectionMain.appendChild(label)
-                    input.value = ""
                 }
-            })
+            } catch ($error) {
+                console.error("Ocorreu um erro: ", $error)
+            }
+            
         })
     }
+    
 })
 const adicionarUsuario = document.querySelectorAll('#adicionarUsuario')
 adicionarUsuario.forEach(element =>{

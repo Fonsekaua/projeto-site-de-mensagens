@@ -117,3 +117,13 @@ function fazerLogin($usuario) {
     }
 }
 
+function uploadRegistro($usuario){
+    global $pdo;
+    $consulta = "INSERT INTO usuarios (usuario) VALUES (:usuario)";
+    $db = $pdo->prepare($consulta);
+    $db->bindParam(":usuario", $usuario);
+
+    $db->execute();
+    return $db->rowCount() > 0; // Retorna TRUE se a operação for bem-sucedida
+}
+

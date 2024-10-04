@@ -5,9 +5,9 @@
             $verificarFriends = verificarAmizade($id, $usuario['id']);
     ?>
     <?php if($verificarFriends): ?>
+        <div id="mensagensBack">
         <span id="usuarioSpan" data-id="<?= $usuario['id'] ?>">
-            <small><?= $usuario['usuario'] ?></small>
-            <p>última mensagem...</p>
+            <small><?= $usuario['usuario'] ?></small>   
         </span>
 
         <section class="opacity" data-id="<?= $usuario['id']?>" id="mensagensSection">
@@ -36,6 +36,8 @@
                 <button>Post</button>
             </div>
         </section>
+        </div>
+        
     <?php endif; ?>    
     <?php endforeach; ?>
     <?php endif; ?>

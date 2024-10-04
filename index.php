@@ -30,12 +30,14 @@ foreach ($usuarios as $usuario) {
     <?php include "php/header.php"; ?>
     
     <?php include "php/pageLogin.php"?>
+     <?php include "php/pageRegistro.php"?>
     <?php include "php/pageAdd.php"?>
     <main>
             <?php include "php/pageMain.php"; ?>    
     </main>
 
     <?php include "php/footer.php"; ?>
+   
 </body>
 
 </html>

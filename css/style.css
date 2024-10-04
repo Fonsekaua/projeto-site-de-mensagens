@@ -44,13 +44,20 @@ main {
 #mensagens {
     display: flex;
     flex-direction: column;
+    width: auto;
+    height: 100%;
+    overflow-y: scroll;
+    scrollbar-width: none;
 }
-
+#mensagensBack{
+    display: flex;
+    flex-direction: column;
+}
 #mensagens span {
     font-size: large;
     letter-spacing: 1px;
     width: 500px;
-    padding: 20px;
+    padding: 25px;
     margin: 5px;
     border-radius: 10px;
     background: #9900ff;
