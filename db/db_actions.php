@@ -92,10 +92,10 @@ function verificarAmizade($id_usuario1, $id_usuario2) {
 }
 
 
-function fazerLogin($usuario) {
+function fazerLogin($usuario, $senha) {
     global $pdo;
     
-    // Consulta SQL para selecionar o usuário com verificação sensível a maiúsculas/minúsculas (BINARY)
+    // Consulta SQL para selecionar o usuário com verificação sensível a maiúsculas/minúsculas
     $consulta = "SELECT * FROM usuarios WHERE BINARY usuario = :usuario";
     
     // Preparar a consulta
@@ -107,23 +107,46 @@ function fazerLogin($usuario) {
     // Executar a consulta
     $db->execute();
     
-    // Verificar se a consulta retornou resultados
+    // Verificar se o usuário foi encontrado
     if ($db->rowCount() > 0) {
-        // Usuário encontrado, retorne o registro
-        return $db->fetch(PDO::FETCH_ASSOC);
+        // Buscar o registro do usuário
+        $usuarioData = $db->fetch(PDO::FETCH_ASSOC);
+
+        // Verificar se a senha fornecida corresponde ao hash armazenado
+        if (password_verify($senha, $usuarioData['senha'])) {
+            // Senha correta, retorna os dados do usuário
+            return $usuarioData;
+        } else {
+            // Senha incorreta
+            return false;
+        }
     } else {
         // Usuário não encontrado
         return false;
     }
 }
 
-function uploadRegistro($usuario){
-    global $pdo;
-    $consulta = "INSERT INTO usuarios (usuario) VALUES (:usuario)";
-    $db = $pdo->prepare($consulta);
-    $db->bindParam(":usuario", $usuario);
 
+function uploadRegistro($usuario, $senha) {
+    global $pdo; // Usa a conexão global com o banco de dados
+
+    // Criptografa a senha usando bcrypt
+    $senhaCripto = password_hash($senha, PASSWORD_DEFAULT);
+
+    // Prepara a consulta SQL para inserir o usuário e a senha criptografada
+    $consulta = "INSERT INTO usuarios (usuario, senha) VALUES (:usuario, :senha)";
+    $db = $pdo->prepare($consulta);
+
+    // Vincula os parâmetros da consulta
+    $db->bindParam(":usuario", $usuario);
+    $db->bindParam(":senha", $senhaCripto);
+
+    // Executa a consulta
     $db->execute();
-    return $db->rowCount() > 0; // Retorna TRUE se a operação for bem-sucedida
+
+    // Retorna TRUE se pelo menos uma linha foi inserida, FALSE se não
+    return $db->rowCount() > 0;
 }
+
+
 

@@ -4,8 +4,9 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
 
     $dados = json_decode(file_get_contents("php://input"),true);
     $usuario = $dados['usuario'];
+    $senha = $dados['senha'];
 
-    if(fazerLogin($usuario)){
+    if(fazerLogin($usuario,$senha)){
         $login = true;
         $mensagem = "Bem-vindo $usuario !";
     }else{

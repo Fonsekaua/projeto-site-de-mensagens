@@ -12,6 +12,7 @@ if($_SERVER["REQUEST_METHOD"] === "POST"){
    
     if($verificarDestinatario == false){
         $envio = false;
+        
         $mensagem = "Destinatario não é amigo do Remetente!!";
     }
     elseif($verificarRemetente == false){

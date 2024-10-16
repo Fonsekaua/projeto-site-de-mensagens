@@ -26,10 +26,14 @@ foreach ($usuarios as $usuario) {
 </head>
 
 <body>
+    <div id="informar" class="inform">
+        <div id="info">
+            <p>esse erro ocorreu por isso e isso aqui</p>
+        </div>
+    </div>
      <div id="tela" class="opacity"></div>   
-    <?php include "php/header.php"; ?>
-    
-    <?php include "php/pageLogin.php"?>
+     <?php include "php/header.php"; ?>
+     <?php include "php/pageLogin.php"?>
      <?php include "php/pageRegistro.php"?>
     <?php include "php/pageAdd.php"?>
     <main>

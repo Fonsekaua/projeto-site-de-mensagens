@@ -7,7 +7,8 @@
     <?php if($verificarFriends): ?>
         <div id="mensagensBack">
         <span id="usuarioSpan" data-id="<?= $usuario['id'] ?>">
-            <small><?= $usuario['usuario'] ?></small>   
+            <small><?= $usuario['usuario'] ?></small> 
+            <p>Abrir bate papo</p>
         </span>
 
         <section class="opacity" data-id="<?= $usuario['id']?>" id="mensagensSection">
